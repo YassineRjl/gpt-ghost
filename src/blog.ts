@@ -34,7 +34,7 @@ export const generateLongTailKeywords = async (ideas: string[]) =>
     });
   });
 
-export const generateOutline = async () =>
+export const generateOutlines = async () =>
   new Promise(async (resolve, reject) => {
     const csv = readFileSync(LOCAL_POSTS_PATH, "utf-8");
     parse(

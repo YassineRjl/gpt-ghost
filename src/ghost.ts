@@ -4,7 +4,7 @@ import { GHOST_FILE_PATH, LOCAL_POSTS_PATH } from "./helpers/constants";
 import { LocalBlogPostType } from "./helpers/types";
 import { formatBlogPost } from "./helpers/utils";
 
-export const prepareBlogPosts = async () => {
+export const exportBlogPosts = async () => {
   const csv = readFileSync(LOCAL_POSTS_PATH, "utf-8");
 
   const blogPosts = await new Promise((resolve, reject) => {

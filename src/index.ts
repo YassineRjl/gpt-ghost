@@ -3,9 +3,9 @@ import {
   generateBlogPosts,
   generateBlogPostsTitles,
   generateLongTailKeywords,
-  generateOutline,
+  generateOutlines,
 } from "./blog";
-import { prepareBlogPosts } from "./ghost";
+import { exportBlogPosts } from "./ghost";
 
 const keywords = ["ChatGPT in Finance"];
 
@@ -13,7 +13,7 @@ const writeBlogPosts = async () => {
   console.log("Generating long tail keywords...");
   await generateLongTailKeywords(keywords);
   console.log("Generating outlines...");
-  await generateOutline();
+  await generateOutlines();
   console.log("Generating blog posts...");
   await generateBlogPosts();
   console.log("Generating blog posts titles...");
@@ -22,7 +22,7 @@ const writeBlogPosts = async () => {
 };
 
 const deployBlogPosts = async () => {
-  await prepareBlogPosts();
+  await exportBlogPosts();
   console.log(`Your blog posts are ready, you can upload the file to ghost!
 Please check this tutorial for more info: https://ghost.org/help/the-importer/#import-from-csv`);
 };
