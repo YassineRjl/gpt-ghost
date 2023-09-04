@@ -1,6 +1,6 @@
 import { parse, stringify } from "csv";
 import { readFileSync, writeFileSync } from "fs";
-import { RESULT_PATH, SEPARATOR } from "./helpers/constants";
+import { LOCAL_POSTS_PATH, SEPARATOR } from "./helpers/constants";
 import {
   getBlogPostPrompt,
   getLongtailKeywordsPrompt,
@@ -29,14 +29,14 @@ export const generateLongTailKeywords = async (ideas: string[]) =>
     // At the end save back to the csv file.
     stringify(data, { header: true }, (err, output) => {
       if (err) reject(err);
-      writeFileSync(RESULT_PATH, output);
+      writeFileSync(LOCAL_POSTS_PATH, output);
       resolve(output);
     });
   });
 
 export const generateOutline = async () =>
   new Promise(async (resolve, reject) => {
-    const csv = readFileSync(RESULT_PATH, "utf-8");
+    const csv = readFileSync(LOCAL_POSTS_PATH, "utf-8");
     parse(
       csv,
       { columns: true },
@@ -62,7 +62,7 @@ export const generateOutline = async () =>
 
         stringify(records, { header: true }, (err, output) => {
           if (err) reject(err);
-          writeFileSync(RESULT_PATH, output);
+          writeFileSync(LOCAL_POSTS_PATH, output);
           resolve(output);
         });
       }
@@ -71,7 +71,7 @@ export const generateOutline = async () =>
 
 export const generateBlogPosts = async () =>
   new Promise(async (resolve, reject) => {
-    const csv = readFileSync(RESULT_PATH, "utf-8");
+    const csv = readFileSync(LOCAL_POSTS_PATH, "utf-8");
     parse(
       csv,
       { columns: true },
@@ -95,7 +95,7 @@ export const generateBlogPosts = async () =>
         }
         stringify(records, { header: true }, (err, output) => {
           if (err) reject(err);
-          writeFileSync(RESULT_PATH, output);
+          writeFileSync(LOCAL_POSTS_PATH, output);
           resolve(output);
         });
       }
@@ -104,7 +104,7 @@ export const generateBlogPosts = async () =>
 
 export const generateBlogPostsTitles = async () =>
   new Promise(async (resolve, reject) => {
-    const csv = readFileSync(RESULT_PATH, "utf-8");
+    const csv = readFileSync(LOCAL_POSTS_PATH, "utf-8");
     parse(
       csv,
       { columns: true },
@@ -128,7 +128,7 @@ export const generateBlogPostsTitles = async () =>
         }
         stringify(records, { header: true }, (err, output) => {
           if (err) reject(err);
-          writeFileSync(RESULT_PATH, output);
+          writeFileSync(LOCAL_POSTS_PATH, output);
           resolve(output);
         });
       }

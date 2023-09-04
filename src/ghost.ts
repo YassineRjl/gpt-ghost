@@ -1,11 +1,11 @@
 import { parse } from "csv";
 import fs, { readFileSync } from "fs";
-import { RESULT_PATH } from "./helpers/constants";
+import { GHOST_FILE_PATH, LOCAL_POSTS_PATH } from "./helpers/constants";
 import { LocalBlogPostType } from "./helpers/types";
 import { formatBlogPost } from "./helpers/utils";
 
 export const prepareBlogPosts = async () => {
-  const csv = readFileSync(RESULT_PATH, "utf-8");
+  const csv = readFileSync(LOCAL_POSTS_PATH, "utf-8");
 
   const blogPosts = await new Promise((resolve, reject) => {
     parse(csv, { columns: true }, (err, records: LocalBlogPostType[]) => {
@@ -31,5 +31,5 @@ export const prepareBlogPosts = async () => {
     });
   });
 
-  fs.writeFileSync("./src/ghost_blog_posts.json", JSON.stringify(blogPosts));
+  fs.writeFileSync(GHOST_FILE_PATH, JSON.stringify(blogPosts));
 };
