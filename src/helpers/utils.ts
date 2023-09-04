@@ -1,3 +1,4 @@
+import fetch from "node-fetch";
 import { GhostBlogPostType, OpenAIResponse, PromptType } from "./types";
 const Converter = require("@tryghost/html-to-mobiledoc");
 
@@ -49,7 +50,7 @@ const fetchWithRetries = async (
   const maxRetries = 401;
   try {
     const response = await fetch(url, remainingOptions);
-    const chatGptData: OpenAIResponse = await response.json();
+    const chatGptData = (await response.json()) as OpenAIResponse;
 
     console.log("openai response ", chatGptData);
     if (
