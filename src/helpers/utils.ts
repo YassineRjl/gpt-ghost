@@ -1,5 +1,6 @@
 import fetch from "node-fetch";
 import { GhostBlogPostType, OpenAIResponse, PromptType } from "./types";
+import { OPENAI_MODELS } from "./constants";
 const Converter = require("@tryghost/html-to-mobiledoc");
 
 export const splitBySeparator = (content: string, separator: string) =>
@@ -47,17 +48,13 @@ const fetchWithRetries = async (
 ): Promise<any> => {
   const { ...remainingOptions } = options;
   const sleepForSeconds = 3000;
-  const maxRetries = 401;
+  const maxRetries = 30;
   try {
     const response = await fetch(url, remainingOptions);
     const chatGptData = (await response.json()) as OpenAIResponse;
 
     console.log("openai response ", chatGptData);
-    if (
-      (chatGptData.choices.length === undefined ||
-        chatGptData.choices.length === 0) &&
-      retryCount < maxRetries
-    ) {
+    if (!chatGptData.choices.length && retryCount < maxRetries) {
       console.log(
         `retry ${retryCount}/${maxRetries}. Error: ${chatGptData.error?.message}`
       );
@@ -79,15 +76,8 @@ const fetchWithRetries = async (
 
 export const getChatgptOutput = async (
   prompt: PromptType,
-  model: "4" | "3-16k"
+  model: keyof typeof OPENAI_MODELS
 ): Promise<string> => {
-  const modelMap = {
-    "4": "gpt-4",
-    "3-16k": "gpt-3.5-turbo-16k",
-    "3": "gpt-3.5-turbo",
-    "4-0314": "gpt-4-0314",
-  };
-
   const data: OpenAIResponse = await fetchWithRetries(
     "https://api.openai.com/v1/chat/completions",
     {
@@ -97,7 +87,7 @@ export const getChatgptOutput = async (
         Authorization: "Bearer " + process.env.OPENAI_API_KEY,
       },
       body: JSON.stringify({
-        model: modelMap[model],
+        model: OPENAI_MODELS[model],
         messages: prompt.messages,
         ...prompt.config,
       }),
