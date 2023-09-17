@@ -1,33 +1,6 @@
-import "dotenv/config";
-import {
-  generateBlogPosts,
-  generateBlogPostsTitles,
-  generateLongTailKeywords,
-  generateOutlines,
-} from "./blog";
-import { exportBlogPosts } from "./ghost";
+import app from "./app";
 
-const keywords = ["ChatGPT in Finance"];
-
-const writeBlogPosts = async () => {
-  console.log("Generating long tail keywords...");
-  await generateLongTailKeywords(keywords);
-  console.log("Generating outlines...");
-  await generateOutlines();
-  console.log("Generating blog posts...");
-  await generateBlogPosts();
-  console.log("Generating blog posts titles...");
-  await generateBlogPostsTitles();
-  console.log("Done!");
-};
-
-const deployBlogPosts = async () => {
-  await exportBlogPosts();
-  console.log(`Your blog posts are ready, you can upload the file to ghost!
-Please check this tutorial for more info: https://ghost.org/help/the-importer/#import-from-csv`);
-};
-
-(async () => {
-  await writeBlogPosts();
-  await deployBlogPosts();
-})();
+// start server
+app.listen(3001, () => {
+  console.log("Server is running on port 3001");
+});
